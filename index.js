@@ -22,6 +22,11 @@ let people = [
         "name": "Mary Poppendieck",
         "number": "39-23-6423122",
         "id": 4
+      },
+      {
+        "name": "rodolfo",
+        "number": "3049234",
+        "id": 6
       }
 ]
 
@@ -43,9 +48,17 @@ app.get('/api/persons/:id',(request, response) => {
     const id = Number(request.params.id)
     console.log(id)
     const person = people.find(person => person.id === id)
-    id
+    person
     ? response.json(person)
     : response.status(404).ind()
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    console.log(id)
+    people = people.filter(person => person.id !== id)
+    
+    response.status(204).end()
 })
 
 const PORT = 3001
