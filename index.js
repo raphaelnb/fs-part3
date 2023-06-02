@@ -48,6 +48,7 @@ app.get('/api/persons/:id',(request, response) => {
     const id = Number(request.params.id)
     console.log(id)
     const person = people.find(person => person.id === id)
+   
     person
     ? response.json(person)
     : response.status(404).ind()
@@ -59,6 +60,28 @@ app.delete('/api/persons/:id', (request, response) => {
     people = people.filter(person => person.id !== id)
     
     response.status(204).end()
+})
+
+const generatedId = (min, max) => {
+    min = Math.ceil(people.length + 1)
+    max = Math.floor(90000)
+    const id = Math.floor(Math.random() * (max - min + 1) + min)
+    return id 
+}
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generatedId()   
+    }
+
+    people = people.concat(person)
+
+    console.log(person)
+
+    response.json(person)
 })
 
 const PORT = 3001
