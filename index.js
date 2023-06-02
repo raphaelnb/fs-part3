@@ -31,11 +31,21 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/info', (request, response) => {
     const numPeople = people.length
+    console.log(numPeople)
     const date = new Date
     response.send(
         `<p>Phonebook has info for ${numPeople} people</p>
         <p>${date}</p>`
     )
+})
+
+app.get('/api/persons/:id',(request, response) => {
+    const id = Number(request.params.id)
+    console.log(id)
+    const person = people.find(person => person.id === id)
+    id
+    ? response.json(person)
+    : response.status(404).ind()
 })
 
 const PORT = 3001
