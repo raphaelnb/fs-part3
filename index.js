@@ -32,6 +32,7 @@ let people = [
 
 app.get('/api/persons', (request, response) => {
     response.json(people)
+    console.log('list of people')
 })
 
 app.get('/info', (request, response) => {
@@ -71,17 +72,29 @@ const generatedId = (min, max) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'Must have a name'
+        })
+    } else if (!body.number) {
+        return response.status(400).json({
+            error: 'Must have a number'
+        })
+    } else if (people.find(p => p.name === body.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }  
+    
     const person = {
         name: body.name,
         number: body.number,
         id: generatedId()   
     }
-
-    people = people.concat(person)
-
+    
     console.log(person)
-
-    response.json(person)
+    people = people.concat(person)
+    response.json(person)   
 })
 
 const PORT = 3001
